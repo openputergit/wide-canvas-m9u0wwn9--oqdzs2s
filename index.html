@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Melodify - Music Streaming App</title>
+    <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background: #0f172a;
+            color: #fff;
+        }
+        .playlist-card:hover .play-icon {
+            opacity: 1;
+            transform: scale(1);
+        }
+        .play-icon {
+            opacity: 0;
+            transform: scale(0.8);
+            transition: all 0.3s ease;
+        }
+        .custom-scrollbar::-webkit-scrollbar {
+            width: 6px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-track {
+            background: #1e293b;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+            background: #475569;
+            border-radius: 3px;
+        }
+    </style>
+</head>
+<body>
+    <div id="app" class="min-h-screen flex">
+        <!-- Sidebar -->
+        <nav class="w-64 bg-slate-900 p-4 hidden md:block">
+            <div class="mb-8">
+                <h1 class="text-2xl font-bold text-white mb-8">Melodify</h1>
+                <ul class="space-y-4">
+                    <li><a href="#" class="flex items-center text-gray-300 hover:text-white"><i class="bi bi-house-door mr-3"></i> Home</a></li>
+                    <li><a href="#" class="flex items-center text-gray-300 hover:text-white"><i class="bi bi-search mr-3"></i> Search</a></li>
+                    <li><a href="#" class="flex items-center text-gray-300 hover:text-white"><i class="bi bi-collection mr-3"></i> Library</a></li>
+                    <li><a href="#" class="flex items-center text-gray-300 hover:text-white"><i class="bi bi-heart mr-3"></i> Favorites</a></li>
+                    <li><a href="#" class="flex items-center text-gray-300 hover:text-white"><i class="bi bi-arrow-down-circle mr-3"></i> Downloads</a></li>
+                </ul>
+            </div>
+            <div class="border-t border-slate-700 pt-4">
+                <h3 class="text-sm font-semibold text-gray-400 mb-4">Your Playlists</h3>
+                <ul class="space-y-3">
+                    <li><a href="#" class="text-gray-300 hover:text-white text-sm">Workout Mix</a></li>
+                    <li><a href="#" class="text-gray-300 hover:text-white text-sm">Chill Vibes</a></li>
+                    <li><a href="#" class="text-gray-300 hover:text-white text-sm">Road Trip</a></li>
+                </ul>
+            </div>
+        </nav>
+
+        <!-- Main Content -->
+        <main class="flex-1 overflow-y-auto custom-scrollbar">
+            <!-- Mobile Header -->
+            <div class="md:hidden bg-slate-900 p-4 flex items-center justify-between">
+                <h1 class="text-xl font-bold">Melodify</h1>
+                <button @click="toggleMenu" class="text-white"><i class="bi bi-list text-2xl"></i></button>
+            </div>
+
+            <!-- Content -->
+            <div class="p-6">
+                <div class="mb-8">
+                    <h2 class="text-2xl font-bold mb-4">Featured Artists</h2>
+                    <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+                        <div v-for="n in 4" class="text-center">
+                            <div class="w-full aspect-square rounded-full bg-slate-800 mb-3"></div>
+                            <p class="text-sm font-medium">Artist Name</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="mb-8">
+                    <h2 class="text-2xl font-bold mb-4">Popular Playlists</h2>
+                    <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+                        <div v-for="n in 4" class="playlist-card relative">
+                            <div class="w-full aspect-square bg-slate-800 rounded-lg mb-2 relative group">
+                                <button class="play-icon absolute bottom-2 right-2 w-10 h-10 bg-green-500 rounded-full flex items-center justify-center">
+                                    <i class="bi bi-play-fill text-xl"></i>
+                                </button>
+                            </div>
+                            <p class="font-medium">Playlist Name</p>
+                            <p class="text-sm text-gray-400">Category</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Subscription Banner -->
+                <div class="bg-gradient-to-r from-purple-600 to-blue-600 rounded-lg p-6 mb-8">
+                    <h3 class="text-xl font-bold mb-2">Upgrade to Premium</h3>
+                    <p class="mb-4">Enjoy ad-free music, offline downloads, and more!</p>
+                    <button class="bg-white text-purple-600 px-6 py-2 rounded-full font-medium">Get Premium</button>
+                </div>
+            </div>
+        </main>
+
+        <!-- Now Playing Bar -->
+        <div class="fixed bottom-0 left-0 right-0 bg-slate-900 border-t border-slate-800 p-4">
+            <div class="flex items-center justify-between max-w-screen-xl mx-auto">
+                <div class="flex items-center flex-1">
+                    <div class="w-12 h-12 bg-slate-800 rounded mr-3"></div>
+                    <div>
+                        <p class="font-medium">Song Name</p>
+                        <p class="text-sm text-gray-400">Artist Name</p>
+                    </div>
+                </div>
+                <div class="flex items-center space-x-4">
+                    <button class="text-gray-400 hover:text-white"><i class="bi bi-shuffle"></i></button>
+                    <button class="text-gray-400 hover:text-white"><i class="bi bi-skip-start-fill"></i></button>
+                    <button class="w-10 h-10 bg-white rounded-full flex items-center justify-center text-black">
+                        <i class="bi bi-play-fill text-xl"></i>
+                    </button>
+                    <button class="text-gray-400 hover:text-white"><i class="bi bi-skip-end-fill"></i></button>
+                    <button class="text-gray-400 hover:text-white"><i class="bi bi-repeat"></i></button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const { createApp } = Vue
+
+        createApp({
+            data() {
+                return {
+                    menuOpen: false
+                }
+            },
+            methods: {
+                toggleMenu() {
+                    this.menuOpen = !this.menuOpen
+                    // Add mobile menu implementation
+                }
+            }
+        }).mount('#app')
+    </script>
+<script>document.body.addEventListener('wheel', e => { if (!e.ctrlKey) return; e.preventDefault(); return }, { passive: false })</script>
+	</body>
+</html>
